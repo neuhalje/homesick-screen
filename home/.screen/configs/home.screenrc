@@ -1,0 +1,2 @@
+screen -M -t mail@home mutt -F ~/.muttrc.home
+screen -M -t mail@gp mutt -F ~/.muttrc.gp

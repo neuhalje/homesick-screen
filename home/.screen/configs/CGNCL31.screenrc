@@ -1,0 +1,6 @@
+screen  -t offlineimap /bin/bash -c "offlineimap  -c ~/.offlineimaprc.jens_gp"
+screen  -t mail-1@gp -M /bin/bash -c "mutt -F ~/.muttrc.offline.jens_gp"
+screen  -t mail-2@gp -M /bin/bash -c "mutt -F ~/.muttrc.offline.jens_gp"
+screen  -t TODO /bin/bash
+screen  -t worklog /bin/bash
+screen  -t misc /bin/bash

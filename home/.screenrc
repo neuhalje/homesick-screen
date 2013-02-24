@@ -1,0 +1,78 @@
+startup_message off # skip splash screen
+vbell on # woof
+autodetach on
+
+altscreen on
+
+# Defines  the  time a message is displayed if screen is not disturbed by other activity. The default is 5 seconds.
+msgwait 2
+
+# Keybindings
+
+# Resize Regions (Split) -- does not really work on Mac bc. lines are inserted between the caption and the hardstatus.
+bind = resize =
+bind + resize +1
+bind - resize -1
+bind "#" resize max
+
+# Navigate Regios C-a j/k
+bind j focus down
+bind k focus up
+
+# "%{= kb}%f%{=u kK} %=%?%F%{=u .y}%:%{=u .K}%?%2n %t%? [%h]%? %{-} %="
+# %{= kb}%f			Flags in blue. &: Someone is sharing your screen, @ something happened
+# %{=u kK} %=			Underlined spaces to the middle. Color is black (k) on light black (K)
+# %?%F (has focus) :% (no focus) %?	If this window (Ctrl-A S -- Split) has the focus (%?%F .. %: .. %?)
+# %?%F%{=u .y}%:%{=u .K}%?	If this window (Ctrl-A S -- Split) has the focus, change text color to yellow, else to black (should strictly not be neccessary)
+# %2n %t			Screen - Number with width 2 (%2n) and title (%t)
+# %? [%h]%?			If there is a hardstatus (%?..%? only prints when the %h evaluates to something
+# %{-}				Pop last color change
+#  %=				Fill with spaces to draw the underline. Don't forget the leading space.
+#
+# The hardstatus is formatted green. PS: Set the hardstatus in bash: echo -ne "\033]0;"myWindowTitle"\007"
+# BUG: The status ius green, even when it does not have the focus
+caption always "%{= kb}%f%{=u kK} %=%?%F%{=u .y}%:%{=u .K}%?%2n %t%? %{=u kK}[%{=u kg}%h%{=u kK}]%? %{=u kK} %="
+
+#    %+Lw     - window list from the next window on (-), show window flags (L)
+hardstatus alwayslastline "%{= kb}%H%{= kK} | %{= kB}%-Lw%{=u ky}%50>%n%f* %t%{-}%+Lw%< %{= kB}%=%{= kK} | %{= kB}%D, %d.%m. %c"
+
+defutf8 on
+
+# terminfo and termcap for nice 256 color terminal
+# allow bold colors - necessary for some reason
+attrcolor b ".I"
+
+# tell screen how to set colors. AB = background, AF=foreground
+# CAVE: Install screen via MacPorts -- MacosX default screen does not support 256 colors 
+#termcapinfo xterm* 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
+#termcapinfo xterm* 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm:ti@:te@O'
+#The scroll buffer of GNU Screen can be accessed with C-a [. However, this is very inconvenient. To use the scroll bar of e.g. xterm or konsole, add the following line to ~/.screenrc: (does not work under MacosX?)
+#termcapinfo xterm* ti@:te@O
+
+defscrollback 10000
+
+termcap xterm* 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm:ti@:te@O'
+terminfo xterm* 'Co#256:AB=\E[48;5;%p1%dm:AF=\E[38;5;%p1%dm:ti@:te@O'
+
+# erase background with current bg color
+defbce "on"
+
+# Make sure that this can be found in your $TERMINFO/...
+term screen-256color-bce
+
+# logout me on hangup
+autodetach on
+pow_detach_msg "Screen session of \$LOGNAME \$:cr:\$:nl:ended."
+
+#
+# Autostart
+#
+# See http://pbrisbin.com/posts/screen_tricks
+# Idea: In the device specific startup files set
+#        export SCREEN_CONF_DIR="$HOME/.screen/configs"
+#        export SCREEN_CONF="${HOST_CONFIG}.screenrc"  # -- or whatever you want
+# sources environment-specific apps
+source "$SCREEN_CONF_DIR/$SCREEN_CONF"
+
+screen -t bash $SHELL
+
