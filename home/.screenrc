@@ -72,7 +72,7 @@ pow_detach_msg "Screen session of \$LOGNAME \$:cr:\$:nl:ended."
 #        export SCREEN_CONF_DIR="$HOME/.screen/configs"
 #        export SCREEN_CONF="${HOST_CONFIG}.screenrc"  # -- or whatever you want
 # sources environment-specific apps
-source "$SCREEN_CONF_DIR/$SCREEN_CONF"
+source "$BASHRC_SCREEN_CONF_DIR/$BASHRC_SCREEN_CONF"
 
 screen -t bash $SHELL
 
